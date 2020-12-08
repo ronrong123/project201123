@@ -41,6 +41,35 @@ public class EmpDAO {
 		}
 		return list;
 	}
+	
+	public List<EmployeeVO> getDeptList(String dept) {
+		conn = DAO.getConnection();
+		sql = "SELECT * FROM emp1\r\n"
+				+ "WHERE department_id = \r\n"
+				+ "(SELECT department_id FROM departments WHERE department_name = ?)";
+		List<EmployeeVO> list = new ArrayList<EmployeeVO>();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dept);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				EmployeeVO vo = new EmployeeVO();
+				vo.setEmployeeId(rs.getInt("employee_id"));
+				vo.setLastName(rs.getString("last_name"));
+				vo.setFirstName(rs.getString("first_name"));
+				vo.setEmail(rs.getString("email"));
+				vo.setJobId(rs.getString("job_id"));
+				vo.setHireDate(rs.getString("hire_date"));
+				list.add(vo);				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
 
 	// 한건조회
 	public EmployeeVO getEmp(int empId) {// empId로 조회함
@@ -129,5 +158,5 @@ public class EmpDAO {
 			e.printStackTrace();
 		}
 	}
-
+	
 }

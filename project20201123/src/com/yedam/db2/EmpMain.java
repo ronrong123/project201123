@@ -1,5 +1,6 @@
 package com.yedam.db2;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,10 +11,11 @@ public class EmpMain {
 
 		Scanner scn = new Scanner(System.in);
 		EmpService service = new EmpServiceImpl();
+		
 		while (true) {
-			System.out.println("------------------------------------------------");
-			System.out.println("1.전체조회 | 2.검색 | 3.입력 | 4.수정 | 5.삭제 | 6.종료");
-			System.out.println("------------------------------------------------");
+			System.out.println("==============================================================");
+			System.out.println(" 1.전체조회 | 2.검색 | 3.입력 | 4.수정 | 5.삭제 | 6.종료 | 7.부서별검색");
+			System.out.println("==============================================================");
 			System.out.print("선택> ");
 			int selectNo = scn.nextInt();scn.nextLine();
 			if (selectNo == 1) {
@@ -23,7 +25,18 @@ public class EmpMain {
 					EmployeeVO emp = (EmployeeVO) vo;
 					emp.showEmpInfo();
 				}
-			} else if (selectNo == 2) {
+			} else if(selectNo == 7) {
+				//부서별검색
+				System.out.print("조회할 부서이름 입력: ");
+				String dept = scn.nextLine();
+				List<EmployeeVO> list = service.getDeptList(dept);
+				for(Object vo : list) {
+					//object는 상위 클래스로 모든 변수를 담을수있음 					
+					EmployeeVO emp = (EmployeeVO) vo;
+					emp.showEmpInfo();
+				}
+				
+			}else if (selectNo == 2) {
 				System.out.print("조회할 사원번호 입력: ");
 				int empId = scn.nextInt();
 				EmployeeVO vo = service.getEmp(empId);
@@ -79,7 +92,7 @@ public class EmpMain {
 				service.deleteEmp(empId);
 			} else if (selectNo == 6) {
 				break;
-			}
+			} 
 
 		}
 		System.out.println("✨✨✨✨✨");
